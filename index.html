@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comp Analysis — 780 Potato Patch Dr, Vail CO</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    background: #f5f2ee;
+    color: #1a1714;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #1a1714;
+    color: #fff;
+    padding: 48px 64px 40px;
+  }
+  .header-eyebrow {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #c8963e;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .header-sub {
+    font-size: 0.9rem;
+    color: #8c7e70;
+    margin-top: 6px;
+  }
+  .header-meta {
+    margin-top: 32px;
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .header-stat label {
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #8c7e70;
+    margin-bottom: 4px;
+  }
+  .header-stat span {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  .header-stat .gold { color: #c8963e; }
+
+  /* ── BODY ── */
+  .body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 64px 80px;
+  }
+
+  /* ── SUBJECT PROPERTY ── */
+  .subject-section {
+    padding: 48px 0 40px;
+    border-bottom: 1px solid #ddd5ca;
+  }
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #c8963e;
+    margin-bottom: 20px;
+  }
+  .subject-card {
+    background: #fff;
+    border: 1px solid #ddd5ca;
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .subject-address {
+    font-family: Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #1a1714;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .subject-price {
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: #c8963e;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+  }
+  .spec-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .spec-item label {
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8c7e70;
+    margin-bottom: 3px;
+  }
+  .spec-item span {
+    font-size: 1.05rem;
+    color: #1a1714;
+  }
+  .subject-desc {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: #4a4238;
+  }
+  .subject-desc p { margin-bottom: 12px; }
+  .subject-desc p:last-child { margin-bottom: 0; }
+  .highlight-tag {
+    display: inline-block;
+    background: #1a1714;
+    color: #c8963e;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+
+  /* ── COMPARABLES ── */
+  .comps-section {
+    padding: 48px 0;
+  }
+  .comps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .comp-card {
+    background: #fff;
+    border: 1px solid #ddd5ca;
+    padding: 28px 32px;
+    position: relative;
+  }
+  .comp-card.highlight {
+    border-color: #c8963e;
+  }
+  .comp-num {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #8c7e70;
+    margin-bottom: 12px;
+  }
+  .comp-num.sold { color: #c8963e; }
+  .comp-address {
+    font-family: Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #1a1714;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .comp-neighborhood {
+    font-size: 0.75rem;
+    color: #8c7e70;
+    margin-bottom: 16px;
+  }
+  .comp-price {
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: #1a1714;
+    margin-bottom: 4px;
+  }
+  .comp-price.sold-price { color: #0a5c2e; }
+  .comp-status {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 3px 8px;
+    display: inline-block;
+  }
+  .comp-status.active { background: #e8f5e9; color: #0a5c2e; }
+  .comp-status.sold { background: #fff3e0; color: #b06000; }
+  .comp-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #ede8e2;
+  }
+  .comp-spec label {
+    display: block;
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #8c7e70;
+    margin-bottom: 2px;
+  }
+  .comp-spec span {
+    font-size: 0.9rem;
+    color: #1a1714;
+  }
+  .comp-note {
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: #4a4238;
+    padding-top: 14px;
+    border-top: 1px solid #ede8e2;
+  }
+
+  /* ── PRICING ANALYSIS ── */
+  .analysis-section {
+    padding: 48px 0;
+    border-top: 1px solid #ddd5ca;
+  }
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .analysis-card {
+    background: #fff;
+    border: 1px solid #ddd5ca;
+    padding: 28px 28px 24px;
+    text-align: center;
+  }
+  .analysis-card.featured {
+    background: #1a1714;
+    border-color: #1a1714;
+  }
+  .analysis-card label {
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8c7e70;
+    margin-bottom: 10px;
+  }
+  .analysis-card.featured label { color: #c8963e; }
+  .analysis-card .big-num {
+    font-size: 1.9rem;
+    font-weight: 300;
+    color: #1a1714;
+    margin-bottom: 6px;
+  }
+  .analysis-card.featured .big-num { color: #fff; }
+  .analysis-card .small-note {
+    font-size: 0.72rem;
+    color: #8c7e70;
+    line-height: 1.5;
+  }
+  .analysis-card.featured .small-note { color: #8c7e70; }
+
+  /* ── TAKEAWAY ── */
+  .takeaway-section {
+    padding: 48px 0;
+    border-top: 1px solid #ddd5ca;
+  }
+  .takeaway-box {
+    background: #fff;
+    border-left: 4px solid #c8963e;
+    padding: 32px 36px;
+  }
+  .takeaway-box h3 {
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: #1a1714;
+  }
+  .takeaway-box p {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: #4a4238;
+    margin-bottom: 12px;
+  }
+  .takeaway-box p:last-child { margin-bottom: 0; }
+  .takeaway-box strong { color: #1a1714; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #1a1714;
+    color: #8c7e70;
+    padding: 28px 64px;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer strong { color: #c8963e; }
+  .footer a {
+    color: #7dd3fc;
+    text-decoration: none;
+  }
+  .disclaimer {
+    background: #ede8e2;
+    padding: 16px 64px;
+    font-size: 0.7rem;
+    color: #8c7e70;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 800px) {
+    .header, .body, .footer, .disclaimer { padding-left: 24px; padding-right: 24px; }
+    .header h1 { font-size: 1.8rem; }
+    .subject-card, .comps-grid, .analysis-grid { grid-template-columns: 1fr; }
+    .header-meta { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-eyebrow">Comparative Market Analysis · John Tyler · Slifer Smith &amp; Frampton</div>
+  <h1>780 Potato Patch Drive<br>Vail, CO 81657</h1>
+  <div class="header-sub">Prepared April 17, 2026 &nbsp;·&nbsp; Doble AI Research</div>
+  <div class="header-meta">
+    <div class="header-stat">
+      <label>List Price</label>
+      <span class="gold">$13,700,000</span>
+    </div>
+    <div class="header-stat">
+      <label>Beds / Baths</label>
+      <span>5 bd &nbsp;/&nbsp; 6 ba</span>
+    </div>
+    <div class="header-stat">
+      <label>Square Footage</label>
+      <span>6,822 sqft</span>
+    </div>
+    <div class="header-stat">
+      <label>Lot Size</label>
+      <span>0.82 acres</span>
+    </div>
+    <div class="header-stat">
+      <label>Year Built</label>
+      <span>2000</span>
+    </div>
+    <div class="header-stat">
+      <label>Price / SqFt</label>
+      <span class="gold">$2,008</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BODY ── -->
+<div class="body">
+
+  <!-- SUBJECT -->
+  <div class="subject-section">
+    <div class="section-label">01 — Subject Property</div>
+    <div class="subject-card">
+      <div>
+        <div class="subject-address">780 Potato Patch Drive</div>
+        <div style="font-size:0.85rem;color:#8c7e70;margin-bottom:20px">Potato Patch Neighborhood · Vail, CO 81657</div>
+        <div class="subject-price">$13,700,000</div>
+        <div class="spec-row">
+          <div class="spec-item"><label>Bedrooms</label><span>5</span></div>
+          <div class="spec-item"><label>Bathrooms</label><span>6 full</span></div>
+          <div class="spec-item"><label>Sqft</label><span>6,822</span></div>
+          <div class="spec-item"><label>Lot</label><span>0.82 ac</span></div>
+          <div class="spec-item"><label>Built</label><span>2000</span></div>
+        </div>
+        <div style="margin-top:20px">
+          <span class="highlight-tag">Guest Residence</span>
+          <span class="highlight-tag">Vail Mtn Club Membership</span>
+          <span class="highlight-tag">Ski Mountain Views</span>
+          <span class="highlight-tag">Old-World European Architecture</span>
+          <span class="highlight-tag">Custom Stonework</span>
+          <span class="highlight-tag">Hand-Forged Fixtures</span>
+          <span class="highlight-tag">Multiple Patios</span>
+        </div>
+      </div>
+      <div class="subject-desc">
+        <p>Architect-designed estate perched above Vail Village on one of Potato Patch's most coveted homesites. The home blends old-world European charm with enduring mountain elegance — custom stonework, hand-forged fixtures, and soaring interiors throughout.</p>
+        <p>A detached guest residence and included Vail Mountain Club membership add meaningful value beyond the primary structure. Multiple patios capture panoramic views of Vail Mountain across all four seasons.</p>
+        <p>Listed by <strong>John Tyler</strong> · Slifer Smith &amp; Frampton | Lionshead</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPS -->
+  <div class="comps-section">
+    <div class="section-label">02 — Comparable Properties</div>
+    <div class="comps-grid">
+
+      <!-- COMP 1 -->
+      <div class="comp-card highlight">
+        <div class="comp-num sold">Comp 1 · Same Street · SOLD</div>
+        <div class="comp-address">756 Potato Patch Drive</div>
+        <div class="comp-neighborhood">Potato Patch · Vail, CO</div>
+        <div class="comp-price sold-price">$8,000,000</div>
+        <span class="comp-status sold">Sold Jun 11, 2025</span>
+        <div class="comp-specs">
+          <div class="comp-spec"><label>Beds</label><span>6</span></div>
+          <div class="comp-spec"><label>Baths</label><span>7</span></div>
+          <div class="comp-spec"><label>Sqft</label><span>N/A</span></div>
+          <div class="comp-spec"><label>Price/SqFt</label><span>—</span></div>
+          <div class="comp-spec"><label>Neighborhood</label><span>Potato Patch</span></div>
+          <div class="comp-spec"><label>Distance</label><span>Same street</span></div>
+        </div>
+        <div class="comp-note">Most geographically comparable sale available. Sold at $8M with 6 beds — the $5.7M premium commanded by 780 is supported by its substantially larger footprint (6,822 sqft confirmed), European finishes, guest residence, and Vail Mountain Club membership. Spec sheet for 756 not publicly confirmed; premium vs. subject likely justified by size differential alone.</div>
+      </div>
+
+      <!-- COMP 2 -->
+      <div class="comp-card">
+        <div class="comp-num">Comp 2 · Active Listing</div>
+        <div class="comp-address">185 Forest Road</div>
+        <div class="comp-neighborhood">Vail Village Core · Vail, CO</div>
+        <div class="comp-price">$14,955,000</div>
+        <span class="comp-status active">Active Listing</span>
+        <div class="comp-specs">
+          <div class="comp-spec"><label>Beds</label><span>5</span></div>
+          <div class="comp-spec"><label>Baths</label><span>7</span></div>
+          <div class="comp-spec"><label>Sqft</label><span>5,347</span></div>
+          <div class="comp-spec"><label>Price/SqFt</label><span>$2,797</span></div>
+          <div class="comp-spec"><label>Neighborhood</label><span>Forest Rd</span></div>
+          <div class="comp-spec"><label>Variance</label><span>+$1,255,000</span></div>
+        </div>
+        <div class="comp-note">Active competitor in the same price tier with identical bedroom count but 1,475 sqft less space. At $2,797/sqft vs. subject's $2,008/sqft, 780 Potato Patch represents compelling value — 27% more space for 8% less money. Vail Village location is slightly more central; Potato Patch offers superior privacy and views.</div>
+      </div>
+
+      <!-- COMP 3 -->
+      <div class="comp-card">
+        <div class="comp-num">Comp 3 · Active Listing</div>
+        <div class="comp-address">416 Forest Road</div>
+        <div class="comp-neighborhood">Vail Village Core · Vail, CO</div>
+        <div class="comp-price">$14,900,000</div>
+        <span class="comp-status active">Active Listing</span>
+        <div class="comp-specs">
+          <div class="comp-spec"><label>Beds</label><span>5</span></div>
+          <div class="comp-spec"><label>Baths</label><span>6</span></div>
+          <div class="comp-spec"><label>Sqft</label><span>3,575</span></div>
+          <div class="comp-spec"><label>Price/SqFt</label><span>$4,168</span></div>
+          <div class="comp-spec"><label>Neighborhood</label><span>Forest Rd</span></div>
+          <div class="comp-spec"><label>Variance</label><span>+$1,200,000</span></div>
+        </div>
+        <div class="comp-note">Nearly identical ask price to 780 Potato Patch, but at 3,575 sqft this is less than half the size. Subject's $2,008/sqft is dramatically more competitive. Buyers comparing these two listings side by side will find 780 Potato Patch to be the clear value play at similar pricing for nearly double the square footage.</div>
+      </div>
+
+      <!-- COMP 4 -->
+      <div class="comp-card">
+        <div class="comp-num">Comp 4 · Active Listing</div>
+        <div class="comp-address">324 Beaver Dam Road</div>
+        <div class="comp-neighborhood">Beaver Dam / Vail Village · Vail, CO</div>
+        <div class="comp-price">$12,500,000</div>
+        <span class="comp-status active">Active Listing</span>
+        <div class="comp-specs">
+          <div class="comp-spec"><label>Beds</label><span>5</span></div>
+          <div class="comp-spec"><label>Baths</label><span>6</span></div>
+          <div class="comp-spec"><label>Sqft</label><span>3,130</span></div>
+          <div class="comp-spec"><label>Price/SqFt</label><span>$3,994</span></div>
+          <div class="comp-spec"><label>Neighborhood</label><span>Beaver Dam</span></div>
+          <div class="comp-spec"><label>Variance</label><span>-$1,200,000</span></div>
+        </div>
+        <div class="comp-note">$1.2M less than subject but 3,692 sqft smaller. On a per-sqft basis the subject is dramatically more competitive ($2,008 vs. $3,994). The Beaver Dam Road corridor is prestigious — but 780 Potato Patch's size, lot, and inclusion of a guest residence and club membership close the gap quickly in buyer-perceived value.</div>
+      </div>
+
+      <!-- COMP 5 -->
+      <div class="comp-card">
+        <div class="comp-num">Comp 5 · Historical Sale</div>
+        <div class="comp-address">458 Vail Valley Road, Unit R1</div>
+        <div class="comp-neighborhood">Golden Peak / Vail Village · Vail, CO</div>
+        <div class="comp-price sold-price">$12,600,000</div>
+        <span class="comp-status sold">Sold Jun 2017</span>
+        <div class="comp-specs">
+          <div class="comp-spec"><label>Beds</label><span>5</span></div>
+          <div class="comp-spec"><label>Baths</label><span>5.5</span></div>
+          <div class="comp-spec"><label>Sqft</label><span>4,765</span></div>
+          <div class="comp-spec"><label>Price/SqFt</label><span>$2,645</span></div>
+          <div class="comp-spec"><label>Neighborhood</label><span>Golden Peak</span></div>
+          <div class="comp-spec"><label>Variance</label><span>-$1,100,000</span></div>
+        </div>
+        <div class="comp-note">Best spec-to-spec historical comp: identical bed/bath profile, similar price tier. Sold at $12.6M in 2017 at 4,765 sqft — subject is 2,057 sqft larger and priced only $1.1M higher nearly a decade later, through a period of significant Vail market appreciation. Suggests subject may be conservatively priced relative to current market trajectory.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRICING ANALYSIS -->
+  <div class="analysis-section">
+    <div class="section-label">03 — Pricing Analysis</div>
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <label>Subject · Price / SqFt</label>
+        <div class="big-num">$2,008</div>
+        <div class="small-note">780 Potato Patch Dr<br>6,822 sqft · $13.7M</div>
+      </div>
+      <div class="analysis-card featured">
+        <label>Avg Competitor · Price / SqFt</label>
+        <div class="big-num">$3,653</div>
+        <div class="small-note">Active listings at similar price<br>Average of Forest Rd &amp; Beaver Dam comps</div>
+      </div>
+      <div class="analysis-card">
+        <label>Subject Discount vs. Comps</label>
+        <div class="big-num" style="color:#0a5c2e">−45%</div>
+        <div class="small-note">Per-sqft vs. active market<br>Structural size advantage</div>
+      </div>
+    </div>
+    <div class="analysis-grid" style="margin-top:16px">
+      <div class="analysis-card">
+        <label>Nearest Sold Comp (2025)</label>
+        <div class="big-num" style="color:#b06000">$8,000,000</div>
+        <div class="small-note">756 Potato Patch Dr<br>Jun 11, 2025 · Same street</div>
+      </div>
+      <div class="analysis-card">
+        <label>Active Inventory $10M+</label>
+        <div class="big-num">28</div>
+        <div class="small-note">Homes listed in Vail<br>As of early 2026</div>
+      </div>
+      <div class="analysis-card">
+        <label>$10M+ Sales · 2024</label>
+        <div class="big-num">24</div>
+        <div class="small-note">Transactions in Vail<br>Demonstrates active buyer pool</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAKEAWAY -->
+  <div class="takeaway-section">
+    <div class="section-label">04 — Agent Summary</div>
+    <div class="takeaway-box">
+      <h3>Positioning &amp; Value Narrative</h3>
+      <p><strong>780 Potato Patch is the largest single-family home currently on the market in this price tier.</strong> At $2,008/sqft, it is priced at a significant discount to competing listings on Forest Road ($2,797–$4,168/sqft) and Beaver Dam ($3,994/sqft) — despite a location that arguably equals or exceeds them for privacy, views, and prestige.</p>
+      <p>The Vail Mountain Club membership included with the sale carries standalone market value and is not reflected in any competing listing at this price point. The detached guest residence adds income or flexibility that a single-structure comparable cannot match.</p>
+      <p>The nearest confirmed sold comp (756 Potato Patch, $8M, June 2025) supports the subject's premium — buyers comparing the two will quickly conclude the additional investment is justified by scale, finishes, and amenities. The 2017 Golden Peak sale at $12.6M for a nearly identical bedroom/bath spec, with nearly 2,100 less square footage, further validates current pricing relative to market trajectory.</p>
+      <p style="font-size:0.78rem;color:#8c7e70;margin-top:8px"><em>Note: Active comp pricing sourced from public MLS listings April 2026. Sold comp data sourced from public records. For verified sold comps and full VMLS data, confirm with John Tyler's MLS access.</em></p>
+    </div>
+  </div>
+
+</div><!-- /body -->
+
+<div class="disclaimer">
+  <strong>Disclosure:</strong> This comparative market analysis was prepared by Doble AI for informational purposes to support John Tyler, Slifer Smith &amp; Frampton | Lionshead. Data sourced from publicly available listings and records as of April 17, 2026. This document does not constitute an appraisal. Verify all figures through the Vail MLS before client distribution.
+</div>
+
+<div class="footer">
+  <div>
+    <strong>John Tyler</strong> · Slifer Smith &amp; Frampton | Lionshead<br>
+    Vail, CO 81657 &nbsp;·&nbsp; johntylerrealestate.com<br>
+    Analysis prepared by <strong>Doble AI</strong> · April 17, 2026
+  </div>
+  <div style="text-align:right">
+    <a href="mailto:jcrounds@pm.me" style="color:#7dd3fc">Contact John Rounds · jcrounds@pm.me</a>
+  </div>
+</div>
+
+</body>
+</html>
